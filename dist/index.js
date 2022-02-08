@@ -24,7 +24,7 @@ async function runFlake8() {
   if (core.getInput("config")) {
     args.push("--config", core.getInput("config"));
   }
-  await exec.exec("git diff --diff-filter=b $(git merge-base HEAD main) -U0 | flake8 --diff", args, {
+  await exec.exec("git diff refs/heads/main -U0 | flake8 --diff", args, {
     listeners: {
       stdout: (data) => {
         output += data.toString();
