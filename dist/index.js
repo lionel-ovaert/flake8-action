@@ -24,7 +24,12 @@ async function runFlake8() {
   if (core.getInput("config")) {
     args.push("--config", core.getInput("config"));
   }
-  await exec.exec("git diff refs/heads/main -U0 | flake8 --diff", args, {
+  let cmd = '/bin/bash -c "git diff refs/heads/main -U0 | flake8 --diff'
+  for (element in args) {
+    cmd += ` ${element}`
+  }
+  cmd += '"'
+  await exec.exec(cmd, [], {
     listeners: {
       stdout: (data) => {
         output += data.toString();
